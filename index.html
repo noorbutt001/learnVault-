@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnVault — Student Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-atm" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div class="bg-dots" aria-hidden="true"></div>
+
+    <!-- Toasts -->
+    <div id="toastBox" class="fixed top-5 right-5 z-[300] flex flex-col gap-3" aria-live="polite"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+            <a class="flex items-center gap-2.5 cursor-pointer" onclick="nav('home')">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--accent)">
+                    <i class="fa-solid fa-book-open text-sm" style="color:var(--bg)"></i>
+                </div>
+                <span class="font-bold text-lg tracking-tight">Learn<span style="color:var(--accent)">Vault</span></span>
+            </a>
+            <div class="desk-nav flex items-center gap-7" style="display:flex">
+                <span class="nav-link active" data-page="home" onclick="nav('home')">Home</span>
+                <span class="nav-link" data-page="courses" onclick="nav('courses')">Courses</span>
+                <span class="nav-link" data-page="quiz" onclick="nav('quiz')">Quizzes</span>
+                <span class="nav-link" data-page="progress" onclick="nav('progress')">Progress</span>
+                <div id="navAuth"></div>
+            </div>
+            <div class="hamburger" id="hamburger" onclick="toggleMob()" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+    <div class="mob-menu" id="mobMenu">
+        <span class="mob-link active" data-page="home" onclick="nav('home');toggleMob()">Home</span>
+        <span class="mob-link" data-page="courses" onclick="nav('courses');toggleMob()">Courses</span>
+        <span class="mob-link" data-page="quiz" onclick="nav('quiz');toggleMob()">Quizzes</span>
+        <span class="mob-link" data-page="progress" onclick="nav('progress');toggleMob()">Progress</span>
+        <div id="mobAuth" class="mt-2 pt-2" style="border-top:1px solid var(--border)"></div>
+    </div>
+
+    <!-- ═══════ PAGES ═══════ -->
+    <main class="relative z-10 pt-16 min-h-screen">
+
+        <!-- HOME -->
+        <div id="page-home" class="page active">
+            <section class="relative overflow-hidden" style="min-height:85vh;display:flex;align-items:center" id="heroSection">
+                <div id="particleBox" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+                <div class="max-w-6xl mx-auto px-5 py-20 md:py-28 relative z-10">
+                    <div class="max-w-2xl">
+                        <div class="streak mb-5"><i class="fa-solid fa-fire"></i> Learning is an adventure</div>
+                        <h1 class="hero-title mb-5">Master New Skills,<br><span class="hero-accent">One Lesson at a Time</span></h1>
+                        <p class="text-base md:text-lg mb-8 leading-relaxed" style="color:var(--muted);max-width:520px">
+                            Interactive courses, quizzes with instant feedback, and a progress tracker to keep you motivated. Start learning today — no account needed to explore.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <button class="btn-primary" onclick="nav('courses')"><i class="fa-solid fa-rocket mr-2"></i>Explore Courses</button>
+                            <button class="btn-outline" onclick="nav('quiz')"><i class="fa-solid fa-brain mr-2"></i>Take a Quiz</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14">
+                        <div class="stat-card"><p class="text-2xl font-bold" style="color:var(--accent)">6</p><p class="text-xs mt-1" style="color:var(--muted)">Courses</p></div>
+                        <div class="stat-card"><p class="text-2xl font-bold" style="color:var(--accent)">48</p><p class="text-xs mt-1" style="color:var(--muted)">Lessons</p></div>
+                        <div class="stat-card"><p class="text-2xl font-bold" style="color:var(--accent)">24</p><p class="text-xs mt-1" style="color:var(--muted)">Quiz Questions</p></div>
+                        <div class="stat-card"><p class="text-2xl font-bold" style="color:var(--accent)">100%</p><p class="text-xs mt-1" style="color:var(--muted)">Free Access</p></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Featured Courses Preview -->
+            <section class="max-w-6xl mx-auto px-5 pb-20">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold">Featured Courses</h2>
+                    <button class="text-sm font-medium cursor-pointer" style="color:var(--accent)" onclick="nav('courses')">View All <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></button>
+                </div>
+                <div id="featuredGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            </section>
+        </div>
+
+        <!-- COURSES -->
+        <div id="page-courses" class="page">
+            <section class="max-w-6xl mx-auto px-5 py-10 md:py-14">
+                <h1 class="text-3xl font-bold mb-2">All Courses</h1>
+                <p class="mb-8" style="color:var(--muted)">Choose a subject and start learning at your own pace.</p>
+                <div id="courseGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            </section>
+        </div>
+
+        <!-- QUIZ -->
+        <div id="page-quiz" class="page">
+            <section class="max-w-3xl mx-auto px-5 py-10 md:py-14">
+                <div id="quizStart">
+                    <h1 class="text-3xl font-bold mb-2">Knowledge Quizzes</h1>
+                    <p class="mb-8" style="color:var(--muted)">Test what you've learned with timed quizzes. Choose a subject to begin.</p>
+                    <div id="quizTopics" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                </div>
+                <div id="quizPlay" style="display:none"></div>
+                <div id="quizResult" style="display:none"></div>
+            </section>
+        </div>
+
+        <!-- PROGRESS -->
+        <div id="page-progress" class="page">
+            <section class="max-w-5xl mx-auto px-5 py-10 md:py-14">
+                <div id="progAuth"></div>
+                <div id="progContent" style="display:none"></div>
+            </section>
+        </div>
+
+        <!-- AUTH -->
+        <div id="page-auth" class="page">
+            <section class="max-w-md mx-auto px-5 py-10 md:py-16">
+                <div class="text-center mb-8">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--accent-dim)">
+                        <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--accent)"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold" id="authTitle">Welcome Back</h1>
+                    <p class="text-sm mt-1" style="color:var(--muted)" id="authSubtitle">Sign in to track your learning progress</p>
+                </div>
+                <div class="flex gap-2 p-1 rounded-xl mb-6" style="background:var(--bg2)">
+                    <div class="auth-tab active flex-1 text-center" id="tabLogin" onclick="switchAuth('login')">Sign In</div>
+                    <div class="auth-tab flex-1 text-center" id="tabSignup" onclick="switchAuth('signup')">Sign Up</div>
+                </div>
+                <form id="authForm" onsubmit="handleAuth(event)" novalidate autocomplete="off">
+                    <div id="nameField" style="display:none" class="mb-4">
+                        <label class="block text-sm font-medium mb-1.5">Full Name</label>
+                        <input type="text" id="authName" class="form-input" placeholder="John Doe">
+                        <p class="err-msg" id="errName"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1.5">Email Address</label>
+                        <input type="email" id="authEmail" class="form-input" placeholder="you@example.com">
+                        <p class="err-msg" id="errEmail"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1.5">Password</label>
+                        <div class="relative">
+                            <input type="password" id="authPass" class="form-input" placeholder="Min 6 characters" style="padding-right:44px">
+                            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm cursor-pointer" style="color:var(--muted);background:none;border:none" onclick="togglePw()" aria-label="Toggle password visibility">
+                                <i class="fa-solid fa-eye" id="pwIcon"></i>
+                            </button>
+                        </div>
+                        <p class="err-msg" id="errPass"></p>
+                    </div>
+                    <div id="confirmField" style="display:none" class="mb-6">
+                        <label class="block text-sm font-medium mb-1.5">Confirm Password</label>
+                        <input type="password" id="authConfirm" class="form-input" placeholder="Repeat your password">
+                        <p class="err-msg" id="errConfirm"></p>
+                    </div>
+                    <button type="submit" class="btn-primary w-full" id="authBtn">Sign In</button>
+                </form>
+                <p class="text-center text-sm mt-5" style="color:var(--muted)" id="authSwitch">
+                    Don't have an account? <span style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuth('signup')">Sign up</span>
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Container -->
+    <div id="modalContainer"></div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="utils.js"></script>
+
+</body>
+</html>
